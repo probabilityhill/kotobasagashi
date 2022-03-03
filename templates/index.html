@@ -1,0 +1,140 @@
+{%- extends "layout.html" %}
+
+{%- block content %}
+<section class="fullscreen">
+  <form action="/result" name="search" method="POST" class="form">
+    <input type="text" name="word" id="inputWord">
+    <button type="submit" class="submitBtn">SEARCH</button>
+    <div class="inputBtn">
+      <div class="inputBtn__item">
+        <input type="button" id="star" onclick="inputSymbol('*')">
+        <label for="star">*</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="tilde" onclick="inputSymbol('~')">
+        <label for="tilde">~</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="exclamation" onclick="inputSymbol('!')">
+        <label for="exclamation">!</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="pipe" onclick="inputSymbol('|')">
+        <label for="pipe">|</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="roundB1" onclick="inputSymbol('(')">
+        <label for="roundB1">(</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="roundB2" onclick="inputSymbol(')')">
+        <label for="roundB2">)</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="curlyB1" onclick="inputSymbol('{')">
+        <label for="curlyB1">{</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="curlyB2" onclick="inputSymbol('}')">
+        <label for="curlyB2">}</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="squareB1" onclick="inputSymbol('[')">
+        <label for="squareB1">[</label>
+      </div>
+      <div class="inputBtn__item">
+        <input type="button" id="squareB2" onclick="inputSymbol(']')">
+        <label for="squareB2">]</label>
+      </div>
+    </div>
+    <div class="radioBtn">
+      <div class="radioBtn__item">
+        <input type="radio" id="r1" name="radio" value="1">
+        <label for="r1">あ</label>
+      </div>
+      <div class="radioBtn__item">
+        <input type="radio" id="r2" name="radio" value="2">
+        <label for="r2">漢</label>
+      </div>
+      <div class="radioBtn__item">
+        <input type="radio" id="r3" name="radio" value="3">
+        <label for="r3">A</label>
+      </div>
+    </div>
+  </form>
+  <div class="ruleInduct">
+    <p class="ruleInduct__txt">RULE</p>
+    <div class="ruleInduct__arrow"></div>
+  </div>
+</section>
+
+<section class="rule">
+  <section class="rule--1">
+    <h2 class="ttl--2">&#45; 文字数を限定する</h2>
+    <p class="rule__item">
+      aで始まる → a***<br>
+      bで終わる → ***b<br>
+      aで始まりbで終わる → a**b<br>
+      aを含む → *a**<br>
+      aを含む → (~a)***（*の数 = 全体の文字数）<br>
+      aとbを含む → (~a)(~b)***（*の数 = 全体の文字数）<br>
+      aを含むがbを含まない → (~a)(!~b)***<br>
+      aまたはbで始まる → {a|b}***<br>
+      aまたはbで終わる → ***{a|b}<br>
+      aまたはbで始まりcまたはdで終わる → {a|b}**{c|d}<br>
+      aまたはbを含む → *{a|b}**<br>
+      aまたはbを含む → (~{a|b}~)***（*の数 = 全体の文字数）<br>
+    </p>
+  </section>
+  <section class="rule--2">
+    <h2 class="ttl--2">&#45; 文字数を限定しない</h2>
+    <p class="rule__item">
+      aで始まる → a~<br>
+      bで終わる → ~b<br>
+      aで始まりbで終わる → a~b<br>
+      aを含む → ~a~<br>
+      aを含まない → (!~a)~<br>
+      aとbを含む → (~a)(~b)~<br>
+      aを含むがbを含まない → (~a)(!~b)~<br>
+      a,b,cで構成される → [abc]<br>
+      aまたはbで始まる → {a|b}~<br>
+      aまたはbで終わる → ~{a|b}<br>
+      aまたはbで始まりcまたはdで終わる → {a|b}~{c|d}<br>
+      aまたはbを含む → ~{a|b}~<br>
+    </p>
+  </section>
+  <section class="rule--3">
+    <h2 class="ttl--2">&#45; 入力の例</h2>
+    <p class="rule__item">
+      s****h → ○ search&ensp;× smooth<br>
+      sea*** → ○ search&ensp;× seal<br>
+      ****ch → ○ search&ensp;× match<br>
+      *ear** → ○ search&ensp;× reason<br>
+      (~ear)****** → ○ search&ensp;× square<br>
+      (~se)(~ch)****** → ○ search&ensp;× research<br>
+      (~se)(!~ch)****** → ○ season&ensp;× search<br>
+      {se|te}**** → ○ search&ensp;× tear<br>
+
+      sea~ → ○ search&ensp;× asean<br>
+      ~ch → ○ search&ensp;× cheese<br>
+      s~h → ○ search&ensp;× ship<br>
+      ~ear~ → ○ search&ensp;× square<br>
+      (!~er)~ → ○ search&ensp;× camera<br>
+      (~se)(~ch)~ → ○ search&ensp;× sandwich<br>
+      (~se)(!~ch)~ → ○ false&ensp;× search<br>
+      [search] → ○ cheese&ensp;× tear<br>
+      ~{sea|sky}~ → ○ tchaikovsky&ensp;× easy<br>
+    </p>
+  </section>
+</section>
+
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+</script>
+<!-- キャッシュ -->
+<script type="text/javascript">
+  document.write(
+      '<script src="../static/js/script.js?' + new Date().getTime() + '"><\/script>'
+    );
+</script>
+{%- endblock %}
