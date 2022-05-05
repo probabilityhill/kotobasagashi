@@ -42,8 +42,8 @@ def Search(data_list, word, radio):
 @app.route("/")
 def index():
     return render_template('index.html',
-            title = 'KOTOBA SAGASHI (ことばさがし)',
-            description = '',
+            title = 'KOTOBA SAGASHI (ことばさがし)｜単語検索サイト',
+            description = 'ひらがな、アルファベット（英単語）、漢字（熟語）のフィルター付き。クロスワード検索、ワイルドカード検索、辞書検索、部分一致検索。',
             url = 'https://probabilityhill.pythonanywhere.com/',
             )
 
@@ -53,7 +53,7 @@ def post():
     word = request.form.get('word')
     radio = request.form.get('radio')
     return render_template('result.html',
-        title = 'search results | KOTOBA SAGASHI (ことばさがし)',
+        title = 'results',
         description = '',
         url = 'https://probabilityhill.pythonanywhere.com/result',
         word = Search(data, word, radio)
