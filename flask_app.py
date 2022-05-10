@@ -54,7 +54,7 @@ def post():
     radio = request.form.get('radio')
     return render_template('result.html',
         title = 'results',
-        description = '',
+        description = 'KOTOBA SAGASHI (ことばさがし)の検索結果です。',
         url = 'https://probabilityhill.pythonanywhere.com/result',
         word = Search(data, word, radio)
         )
