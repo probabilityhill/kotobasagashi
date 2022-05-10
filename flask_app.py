@@ -59,6 +59,10 @@ def post():
         word = Search(data, word, radio)
         )
 
+@app.route("/sitemap.xml")
+def sitemap():
+    return app.send_static_file("sitemap.xml")
+
 """
 @app.route("/sub")
 def sub():
